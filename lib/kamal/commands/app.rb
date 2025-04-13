@@ -19,6 +19,7 @@ class Kamal::Commands::App < Kamal::Commands::Base
       "--restart unless-stopped",
       "--name", container_name,
       "--network", "kamal",
+      "--publish", "3000:3000",
       *([ "--hostname", hostname ] if hostname),
       "-e", "KAMAL_CONTAINER_NAME=\"#{container_name}\"",
       "-e", "KAMAL_VERSION=\"#{config.version}\"",
