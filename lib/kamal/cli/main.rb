@@ -34,8 +34,9 @@ class Kamal::Cli::Main < Kamal::Cli::Base
       with_lock do
         run_hook "pre-deploy", secrets: true
 
-        say "Ensure kamal-proxy is running...", :magenta
-        invoke "kamal:cli:proxy:boot", [], invoke_options
+        # Proxy boot step skipped
+        # say "Ensure kamal-proxy is running...", :magenta
+        # invoke "kamal:cli:proxy:boot", [], invoke_options
 
         invoke "kamal:cli:accessory:boot", [ "all" ], invoke_options if boot_accessories
 

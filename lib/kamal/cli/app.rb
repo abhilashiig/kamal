@@ -50,13 +50,14 @@ class Kamal::Cli::App < Kamal::Cli::Base
           execute *KAMAL.auditor.record("Started app version #{KAMAL.config.version}"), verbosity: :debug
           execute *app.start, raise_on_non_zero_exit: false
 
-          if role.running_proxy?
-            version = capture_with_info(*app.current_running_version, raise_on_non_zero_exit: false).strip
-            endpoint = capture_with_info(*app.container_id_for_version(version)).strip
-            raise Kamal::Cli::BootError, "Failed to get endpoint for #{role} on #{host}, did the container boot?" if endpoint.empty?
-
-            execute *app.deploy(target: endpoint)
-          end
+          # Skip proxy deployment when starting containers
+          # if role.running_proxy?
+          #   version = capture_with_info(*app.current_running_version, raise_on_non_zero_exit: false).strip
+          #   endpoint = capture_with_info(*app.container_id_for_version(version)).strip
+          #   raise Kamal::Cli::BootError, "Failed to get endpoint for #{role} on #{host}, did the container boot?" if endpoint.empty?
+          #
+          #   execute *app.deploy(target: endpoint)
+          # end
         end
       end
     end
@@ -72,13 +73,14 @@ class Kamal::Cli::App < Kamal::Cli::Base
           app = KAMAL.app(role: role, host: host)
           execute *KAMAL.auditor.record("Stopped app", role: role), verbosity: :debug
 
-          if role.running_proxy?
-            version = capture_with_info(*app.current_running_version, raise_on_non_zero_exit: false).strip
-            endpoint = capture_with_info(*app.container_id_for_version(version)).strip
-            if endpoint.present?
-              execute *app.remove, raise_on_non_zero_exit: false
-            end
-          end
+          # Skip proxy removal when stopping containers
+          # if role.running_proxy?
+          #   version = capture_with_info(*app.current_running_version, raise_on_non_zero_exit: false).strip
+          #   endpoint = capture_with_info(*app.container_id_for_version(version)).strip
+          #   if endpoint.present?
+          #     execute *app.remove, raise_on_non_zero_exit: false
+          #   end
+          # end
 
           execute *app.stop, raise_on_non_zero_exit: false
         end
