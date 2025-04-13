@@ -15,7 +15,7 @@ class Kamal::Commands::App < Kamal::Commands::Base
 
   def run(hostname: nil)
     # Remove any containers using port 3000
-    shell "docker ps -q --filter publish=3000 | xargs -r docker rm -f > /dev/null 2>&1 || true"
+    pipe docker(:ps, "-q", "--filter", "publish=3000"), xargs(docker(:rm, "-f"))
     
     docker :run,
       "--detach",
